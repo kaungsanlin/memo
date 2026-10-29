@@ -59,9 +59,7 @@
         <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-images text-sky-400"></i> Photos List</h2>
         <span class="text-xs text-slate-400">images/ folder ထဲမှ ပုံများ</span>
       </div>
-      <div id="grid-photos" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <!-- JavaScript ဖြင့် အလိုအလျောက် ဝင်လာမည် -->
-      </div>
+      <div id="grid-photos" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"></div>
     </section>
 
     <!-- 2. APPS SECTION -->
@@ -70,9 +68,7 @@
         <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-cubes text-sky-400"></i> Apps List</h2>
         <span class="text-xs text-slate-400">apps/ folder ထဲမှ ဖိုင်များ</span>
       </div>
-      <div id="grid-apps" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- JavaScript ဖြင့် အလိုအလျောက် ဝင်လာမည် -->
-      </div>
+      <div id="grid-apps" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </section>
 
     <!-- 3. OTHERS SECTION -->
@@ -81,9 +77,7 @@
         <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-file-lines text-sky-400"></i> Others List</h2>
         <span class="text-xs text-slate-400">docs/ folder ထဲမှ ဖိုင်များ</span>
       </div>
-      <div id="grid-others" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- JavaScript ဖြင့် အလိုအလျောက် ဝင်လာမည် -->
-      </div>
+      <div id="grid-others" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </section>
 
     <!-- Loading State -->
@@ -102,7 +96,7 @@
     </div>
     <div class="flex items-center gap-4">
       <span id="lightbox-caption" class="text-slate-300 text-sm font-medium"></span>
-      <a id="lightbox-download" href="" download class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg transition flex items-center gap-2"><i class="fa-solid fa-download"></i> Download</a>
+      <button id="lightbox-download-btn" onclick="" class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg transition flex items-center gap-2"><i class="fa-solid fa-download"></i> Download Full Size</button>
     </div>
   </div>
 
@@ -111,9 +105,8 @@
   </footer>
 
   <script>
-    // GitHub အချက်အလက်များ
     const username = "kaungsanlin";
-    const repo = "memo"; // သင့် Repository နာမည်
+    const repo = "memo";
 
     let currentCategory = 'photos';
     let allFilesData = { photos: [], apps: [], others: [] };
@@ -137,7 +130,6 @@
         if (!res.ok) return;
         const files = await res.json();
         
-        // GitHub raw download link တိုက်ရိုက်သုံးရန် ချိန်ညှိခြင်း (100% Download ရစေရန်)
         allFilesData[targetKey] = files.filter(f => f.type === 'file').map(f => {
           return {
             name: f.name,
@@ -148,6 +140,25 @@
         document.getElementById(`badge-${targetKey}`).textContent = allFilesData[targetKey].length;
       } catch (err) {
         console.error(`Error loading ${folderName}:`, err);
+      }
+    }
+
+    // Forced Download Function via Blob (fixes cross-origin download issue)
+    async function downloadFile(url, filename) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+      } catch (err) {
+        window.open(url, '_blank');
       }
     }
 
@@ -166,7 +177,7 @@
             <h3 class="item-title font-medium text-sm text-slate-200 truncate mb-2">${file.name}</h3>
             <div class="flex gap-2">
               <button onclick="openLightbox('${file.download_url}', '${file.name}')" class="flex-1 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs rounded-lg transition text-center"><i class="fa-solid fa-eye mr-1"></i> ကြည့်မည်</button>
-              <a href="${file.download_url}" download class="flex-1 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs rounded-lg transition text-center"><i class="fa-solid fa-download mr-1"></i> Download</a>
+              <button onclick="downloadFile('${file.download_url}', '${file.name}')" class="flex-1 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs rounded-lg transition text-center"><i class="fa-solid fa-download mr-1"></i> Download</button>
             </div>
           </div>
         </div>
@@ -185,9 +196,9 @@
               <p class="text-xs text-slate-400 mt-0.5">Android APK / App</p>
             </div>
           </div>
-          <a href="${file.download_url}" download class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 shadow-md">
+          <button onclick="downloadFile('${file.download_url}', '${file.name}')" class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 shadow-md">
             <i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်ရယူရန်
-          </a>
+          </button>
         </div>
       `).join('') || '<p class="text-slate-500 col-span-full text-center py-6">Apps များ မရှိသေးပါ။</p>';
 
@@ -204,7 +215,7 @@
               <p class="text-xs text-slate-400 mt-0.5">Document File</p>
             </div>
           </div>
-          <a href="${file.download_url}" download class="p-2.5 bg-slate-700 hover:bg-sky-600 text-slate-300 hover:text-white rounded-xl transition flex-shrink-0 ml-2"><i class="fa-solid fa-download"></i></a>
+          <button onclick="downloadFile('${file.download_url}', '${file.name}')" class="p-2.5 bg-slate-700 hover:bg-sky-600 text-slate-300 text-white rounded-xl transition flex-shrink-0 ml-2"><i class="fa-solid fa-download"></i></button>
         </div>
       `).join('') || '<p class="text-slate-500 col-span-full text-center py-6">ဖိုင်များ မရှိသေးပါ။</p>';
 
@@ -224,7 +235,7 @@
     function openLightbox(url, title) {
       document.getElementById('lightbox-img').src = url;
       document.getElementById('lightbox-caption').textContent = title;
-      document.getElementById('lightbox-download').href = url;
+      document.getElementById('lightbox-download-btn').setAttribute('onclick', `downloadFile('${url}', '${title}')`);
       document.getElementById('lightbox').classList.add('active');
     }
 

@@ -9,21 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Myanmar:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: { 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1', 900: '#0c4a6e' },
-            darkbg: '#0f172a',
-            cardbg: '#1e293b',
-            bordercolor: '#334155'
-          },
-          fontFamily: { sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
   <style>
     body { background-color: #0f172a; color: #f8fafc; font-family: 'Inter', 'Noto Sans Myanmar', sans-serif; }
     .tab-content { display: none; }
@@ -37,8 +22,8 @@
   <div class="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
     
     <!-- Header -->
-    <header class="text-center mb-8 border-b border-bordercolor pb-6">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-600/20 text-brand-400 mb-4 ring-1 ring-brand-500/30">
+    <header class="text-center mb-8 border-b border-slate-700 pb-6">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-sky-600/20 text-sky-400 mb-4 ring-1 ring-sky-500/30">
         <i class="fa-solid fa-cloud-arrow-up text-3xl"></i>
       </div>
       <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Kaung San Lin's Storage Hub</h1>
@@ -47,15 +32,15 @@
 
     <!-- Navigation Tabs -->
     <nav class="flex justify-center mb-6">
-      <div class="bg-cardbg p-1.5 rounded-2xl border border-bordercolor flex gap-1 sm:gap-2 max-w-md w-full justify-between shadow-xl">
-        <button id="btn-photos" onclick="switchCategory('photos')" class="tab-btn flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 bg-brand-600 text-white shadow-md">
-          <i class="fa-solid fa-image"></i> Photos <span id="badge-photos" class="bg-brand-900/60 text-xs px-2 py-0.5 rounded-full">0</span>
+      <div class="bg-slate-800 p-1.5 rounded-2xl border border-slate-700 flex gap-1 sm:gap-2 max-w-md w-full justify-between shadow-xl">
+        <button id="btn-photos" onclick="switchCategory('photos')" class="tab-btn flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 bg-sky-600 text-white shadow-md">
+          <i class="fa-solid fa-image"></i> Photos <span id="badge-photos" class="bg-sky-900/60 text-xs px-2 py-0.5 rounded-full">0</span>
         </button>
         <button id="btn-apps" onclick="switchCategory('apps')" class="tab-btn flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white flex items-center justify-center gap-2">
-          <i class="fa-solid fa-mobile-screen"></i> Apps <span id="badge-apps" class="bg-slate-800 text-xs px-2 py-0.5 rounded-full">0</span>
+          <i class="fa-solid fa-mobile-screen"></i> Apps <span id="badge-apps" class="bg-slate-700 text-xs px-2 py-0.5 rounded-full">0</span>
         </button>
         <button id="btn-others" onclick="switchCategory('others')" class="tab-btn flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white flex items-center justify-center gap-2">
-          <i class="fa-solid fa-folder-open"></i> Others <span id="badge-others" class="bg-slate-800 text-xs px-2 py-0.5 rounded-full">0</span>
+          <i class="fa-solid fa-folder-open"></i> Others <span id="badge-others" class="bg-slate-700 text-xs px-2 py-0.5 rounded-full">0</span>
         </button>
       </div>
     </nav>
@@ -64,46 +49,46 @@
     <div class="max-w-md mx-auto mb-8">
       <div class="relative">
         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="ဖိုင်နာမည်ရှာရန်..." class="w-full bg-cardbg border border-bordercolor text-slate-200 placeholder-slate-400 text-sm rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:border-brand-500 shadow-inner">
+        <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="ဖိုင်နာမည်ရှာရန်..." class="w-full bg-slate-800 border border-slate-700 text-slate-200 placeholder-slate-400 text-sm rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:border-sky-500 shadow-inner">
       </div>
     </div>
 
     <!-- 1. PHOTOS SECTION -->
     <section id="category-photos" class="tab-content active">
-      <div class="flex items-center justify-between mb-4 border-b border-bordercolor/50 pb-2">
-        <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-images text-brand-400"></i> Photos List</h2>
+      <div class="flex items-center justify-between mb-4 border-b border-slate-700/50 pb-2">
+        <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-images text-sky-400"></i> Photos List</h2>
         <span class="text-xs text-slate-400">images/ folder ထဲမှ ပုံများ</span>
       </div>
       <div id="grid-photos" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <!-- Loaded via JavaScript -->
+        <!-- JavaScript ဖြင့် အလိုအလျောက် ဝင်လာမည် -->
       </div>
     </section>
 
     <!-- 2. APPS SECTION -->
     <section id="category-apps" class="tab-content">
-      <div class="flex items-center justify-between mb-4 border-b border-bordercolor/50 pb-2">
-        <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-cubes text-brand-400"></i> Apps List</h2>
+      <div class="flex items-center justify-between mb-4 border-b border-slate-700/50 pb-2">
+        <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-cubes text-sky-400"></i> Apps List</h2>
         <span class="text-xs text-slate-400">apps/ folder ထဲမှ ဖိုင်များ</span>
       </div>
       <div id="grid-apps" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Loaded via JavaScript -->
+        <!-- JavaScript ဖြင့် အလိုအလျောက် ဝင်လာမည် -->
       </div>
     </section>
 
     <!-- 3. OTHERS SECTION -->
     <section id="category-others" class="tab-content">
-      <div class="flex items-center justify-between mb-4 border-b border-bordercolor/50 pb-2">
-        <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-file-lines text-brand-400"></i> Others List</h2>
+      <div class="flex items-center justify-between mb-4 border-b border-slate-700/50 pb-2">
+        <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2"><i class="fa-solid fa-file-lines text-sky-400"></i> Others List</h2>
         <span class="text-xs text-slate-400">docs/ folder ထဲမှ ဖိုင်များ</span>
       </div>
       <div id="grid-others" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Loaded via JavaScript -->
+        <!-- JavaScript ဖြင့် အလိုအလျောက် ဝင်လာမည် -->
       </div>
     </section>
 
     <!-- Loading State -->
     <div id="loading-state" class="text-center py-12 text-slate-400">
-      <i class="fa-solid fa-spinner fa-spin text-3xl mb-2 text-brand-400"></i>
+      <i class="fa-solid fa-spinner fa-spin text-3xl mb-2 text-sky-400"></i>
       <p>ဖိုင်များကို GitHub မှ ရယူနေပါသည်...</p>
     </div>
 
@@ -117,16 +102,16 @@
     </div>
     <div class="flex items-center gap-4">
       <span id="lightbox-caption" class="text-slate-300 text-sm font-medium"></span>
-      <a id="lightbox-download" href="" download class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-lg transition flex items-center gap-2"><i class="fa-solid fa-download"></i> Download</a>
+      <a id="lightbox-download" href="" download class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-lg transition flex items-center gap-2"><i class="fa-solid fa-download"></i> Download</a>
     </div>
   </div>
 
-  <footer class="border-t border-bordercolor/50 py-6 text-center text-xs text-slate-500">
-    <p>© Kaung San Lin • Dynamic GitHub API Storage</p>
+  <footer class="border-t border-slate-700/50 py-6 text-center text-xs text-slate-500">
+    <p>© Kaung San Lin • Dynamic GitHub Storage</p>
   </footer>
 
   <script>
-    // GitHub အချက်အလက်များ (သင့်အကောင့်အမည်နှင့် Repository နာမည်ကို ထည့်ပါ)
+    // GitHub အချက်အလက်များ
     const username = "kaungsanlin";
     const repo = "memo"; // သင့် Repository နာမည်
 
@@ -141,7 +126,7 @@
       document.querySelectorAll('.tab-btn').forEach(b => {
         b.className = "tab-btn flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-white flex items-center justify-center gap-2";
       });
-      document.getElementById(`btn-${cat}`).className = "tab-btn flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 bg-brand-600 text-white shadow-md";
+      document.getElementById(`btn-${cat}`).className = "tab-btn flex-1 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 bg-sky-600 text-white shadow-md";
       filterItems();
     }
 
@@ -151,7 +136,15 @@
         const res = await fetch(url);
         if (!res.ok) return;
         const files = await res.json();
-        allFilesData[targetKey] = files.filter(f => f.type === 'file');
+        
+        // GitHub raw download link တိုက်ရိုက်သုံးရန် ချိန်ညှိခြင်း (100% Download ရစေရန်)
+        allFilesData[targetKey] = files.filter(f => f.type === 'file').map(f => {
+          return {
+            name: f.name,
+            download_url: `https://raw.githubusercontent.com/${username}/${repo}/main/${folderName}/${f.name}`
+          };
+        });
+
         document.getElementById(`badge-${targetKey}`).textContent = allFilesData[targetKey].length;
       } catch (err) {
         console.error(`Error loading ${folderName}:`, err);
@@ -159,10 +152,10 @@
     }
 
     function renderAll() {
-      // Render Photos
+      // Photos
       const pGrid = document.getElementById('grid-photos');
       pGrid.innerHTML = allFilesData.photos.map(file => `
-        <div class="item-card bg-cardbg border border-bordercolor rounded-xl overflow-hidden hover:border-brand-500/50 transition shadow-lg group">
+        <div class="item-card bg-slate-800 border border-slate-700 rounded-xl overflow-hidden hover:border-sky-500/50 transition shadow-lg group">
           <div class="relative aspect-square overflow-hidden bg-slate-900">
             <img src="${file.download_url}" alt="${file.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
             <button onclick="openLightbox('${file.download_url}', '${file.name}')" class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white">
@@ -172,46 +165,46 @@
           <div class="p-3">
             <h3 class="item-title font-medium text-sm text-slate-200 truncate mb-2">${file.name}</h3>
             <div class="flex gap-2">
-              <button onclick="openLightbox('${file.download_url}', '${file.name}')" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg transition text-center"><i class="fa-solid fa-eye mr-1"></i> ကြည့်မည်</button>
-              <a href="${file.download_url}" download class="flex-1 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs rounded-lg transition text-center"><i class="fa-solid fa-download mr-1"></i> Download</a>
+              <button onclick="openLightbox('${file.download_url}', '${file.name}')" class="flex-1 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs rounded-lg transition text-center"><i class="fa-solid fa-eye mr-1"></i> ကြည့်မည်</button>
+              <a href="${file.download_url}" download class="flex-1 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs rounded-lg transition text-center"><i class="fa-solid fa-download mr-1"></i> Download</a>
             </div>
           </div>
         </div>
       `).join('') || '<p class="text-slate-500 col-span-full text-center py-6">ပုံများ မရှိသေးပါ။</p>';
 
-      // Render Apps
+      // Apps
       const aGrid = document.getElementById('grid-apps');
       aGrid.innerHTML = allFilesData.apps.map(file => `
-        <div class="item-card bg-cardbg border border-bordercolor rounded-2xl p-4 hover:border-brand-500/50 transition shadow-lg flex flex-col justify-between">
+        <div class="item-card bg-slate-800 border border-slate-700 rounded-2xl p-4 hover:border-sky-500/50 transition shadow-lg flex flex-col justify-between">
           <div class="flex items-start gap-3 mb-3">
-            <div class="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-brand-400 text-2xl flex-shrink-0">
+            <div class="w-12 h-12 rounded-xl bg-slate-700 border border-slate-600 flex items-center justify-center text-sky-400 text-2xl flex-shrink-0">
               <i class="fa-brands fa-android"></i>
             </div>
             <div class="overflow-hidden">
               <h3 class="item-title font-semibold text-base text-slate-100 truncate">${file.name}</h3>
-              <p class="text-xs text-slate-400 mt-0.5">App / File</p>
+              <p class="text-xs text-slate-400 mt-0.5">Android APK / App</p>
             </div>
           </div>
-          <a href="${file.download_url}" download class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 shadow-md">
+          <a href="${file.download_url}" download class="w-full py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 shadow-md">
             <i class="fa-solid fa-download"></i> ဒေါင်းလုဒ်ရယူရန်
           </a>
         </div>
       `).join('') || '<p class="text-slate-500 col-span-full text-center py-6">Apps များ မရှိသေးပါ။</p>';
 
-      // Render Others
+      // Others
       const oGrid = document.getElementById('grid-others');
       oGrid.innerHTML = allFilesData.others.map(file => `
-        <div class="item-card bg-cardbg border border-bordercolor rounded-2xl p-4 hover:border-brand-500/50 transition shadow-lg flex items-center justify-between">
+        <div class="item-card bg-slate-800 border border-slate-700 rounded-2xl p-4 hover:border-sky-500/50 transition shadow-lg flex items-center justify-between">
           <div class="flex items-center gap-3 overflow-hidden">
             <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center text-xl flex-shrink-0">
               <i class="fa-solid fa-file-lines"></i>
             </div>
             <div class="overflow-hidden">
               <h3 class="item-title font-medium text-sm text-slate-200 truncate">${file.name}</h3>
-              <p class="text-xs text-slate-400 mt-0.5">Document / File</p>
+              <p class="text-xs text-slate-400 mt-0.5">Document File</p>
             </div>
           </div>
-          <a href="${file.download_url}" download class="p-2.5 bg-slate-800 hover:bg-brand-600 text-slate-300 hover:text-white rounded-xl transition flex-shrink-0 ml-2"><i class="fa-solid fa-download"></i></a>
+          <a href="${file.download_url}" download class="p-2.5 bg-slate-700 hover:bg-sky-600 text-slate-300 hover:text-white rounded-xl transition flex-shrink-0 ml-2"><i class="fa-solid fa-download"></i></a>
         </div>
       `).join('') || '<p class="text-slate-500 col-span-full text-center py-6">ဖိုင်များ မရှိသေးပါ။</p>';
 

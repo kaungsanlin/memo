@@ -3,133 +3,424 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Personal Hub & Storage</title>
+  <title>Kaung San Lin | Personal Cloud Storage</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Noto Sans Myanmar -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Myanmar:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e',
+            },
+            darkbg: '#0f172a',
+            cardbg: '#1e293b',
+            bordercolor: '#334155'
+          },
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans Myanmar', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; padding: 20px; }
-    .container { max-width: 1000px; margin: 0 auto; }
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: 'Inter', 'Noto Sans Myanmar', sans-serif;
+    }
     
-    header { text-align: center; margin-bottom: 30px; padding: 20px 0; border-bottom: 1px solid #334155; }
-    h1 { font-size: 1.8rem; color: #38bdf8; margin-bottom: 8px; }
+    /* Smooth transitions for tab changes and cards */
+    .tab-content {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.25s ease-in-out;
+    }
     
-    /* Navigation Tabs */
-    .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
-    .tab-btn { background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: 0.2s; }
-    .tab-btn.active { background: #0284c7; color: #fff; border-color: #0284c7; }
-    
-    .section { display: none; }
-    .section.active { display: block; }
-    
-    .section-title { margin-bottom: 20px; color: #f1f5f9; font-size: 1.3rem; border-left: 4px solid #38bdf8; padding-left: 10px; }
-    
-    /* Grid Layout */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-    .card { background: #1e293b; border-radius: 12px; padding: 16px; border: 1px solid #334155; text-align: center; transition: transform 0.2s; }
-    .card:hover { transform: translateY(-3px); }
-    
-    .card img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: #334155; }
-    .card h3 { font-size: 1rem; margin-bottom: 10px; color: #e2e8f0; word-break: break-all; }
-    
-    .btn { display: inline-block; background: #0284c7; color: #fff; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: bold; }
-    .btn:hover { background: #0369a1; }
+    .tab-content.active {
+      display: block;
+      opacity: 1;
+    }
+
+    /* Modal Image Lightbox styling */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(8px);
+    }
+    .lightbox.active {
+      display: flex;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0284c7;
+    }
   </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brand-500 selection:text-white">
 
-<div class="container">
-  <header>
-    <h1>🚀 My Personal App & Photo Hub</h1>
-    <p>ဖိုင်များနှင့် ပုံများ သိမ်းဆည်းရာ စာမျက်နှာ</p>
-  </header>
-
-  <!-- Menu Switcher Tabs -->
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('apps')">📱 Apps List (<span id="app-count">0</span>)</button>
-    <button class="tab-btn" onclick="switchTab('photos')">🖼️ Photo List (<span id="photo-count">0</span>)</button>
-  </div>
-
-  <!-- Apps Section -->
-  <div id="apps-section" class="section active">
-    <h2 class="section-title">Applications & APKs</h2>
-    <div id="apps-grid" class="grid">
-      <!-- GitHub ထဲက apps တွေ ဒီနေရာမှာ အလိုအလျောက် ဝင်လာပါမယ် -->
-    </div>
-  </div>
-
-  <!-- Photos Section -->
-  <div id="photos-section" class="section">
-    <h2 class="section-title">Photos & Images</h2>
-    <div id="photos-grid" class="grid">
-      <!-- GitHub ထဲက ပုံတွေ ဒီနေရာမှာ အလိုအလျောက် ဝင်လာပါမယ် -->
-    </div>
-  </div>
-</div>
-
-<script>
-  // Tab ပြောင်းရန် Function
-  function switchTab(tabName) {
-    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  <!-- Main Container -->
+  <div class="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
     
-    if(tabName === 'apps') {
-      document.getElementById('apps-section').classList.add('active');
-      event.currentTarget.classList.add('active');
-    } else {
-      document.getElementById('photos-section').classList.add('active');
-      event.currentTarget.classList.add('active');
-    }
-  }
+    <!-- Header Section -->
+    <header class="text-center mb-8 border-b border-bordercolor pb-6">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-600/20 text-brand-400 mb-4 ring-1 ring-brand-500/30">
+        <i class="fa-solid font-bold fa-cloud-arrow-up text-3xl"></i>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Kaung San Lin's Storage Hub</h1>
+      <p class="text-slate-400 text-sm sm:text-base mt-2">ကိုယ်ပိုင် App များ၊ ဓာတ်ပုံများနှင့် ဖိုင်များ စနစ်တကျ သိမ်းဆည်းရာနေရာ</p>
+    </header>
 
-  // GitHub Repository အချက်အလက်များ (မိမိ Username နဲ့ Repo နာမည်ကို ထည့်ပါ)
-  const username = "kaungsanlin"; 
-  const repoName = "repo-name"; // မိမိ Repository နာမည် အမှန်ထည့်ပါ
+    <!-- Navigation Bar / Category Tabs -->
+    <nav class="flex justify-center mb-6">
+      <div class="bg-cardbg p-1.5 rounded-2xl border border-bordercolor flex gap-1 sm:gap-2 max-w-md w-full justify-between shadow-xl">
+        
+        <!-- Photo List Tab Button -->
+        <button id="btn-photos" onclick="switchCategory('photos')" 
+                class="tab-btn flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 bg-brand-600 text-white shadow-md">
+          <i class="fa-solid fa-image text-base"></i>
+          <span>Photos</span>
+          <span id="badge-photos" class="bg-brand-900/60 text-brand-100 text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+        </button>
 
-  // GitHub API မှတစ်ဆင့် Folder ထဲက ဖိုင်များကို ဖတ်ယူခြင်း
-  async function loadFiles(folder, gridId, countId, isImage = false) {
-    const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents/${folder}`;
-    try {
-      const response = await fetch(apiUrl);
-      const files = await response.json();
-      
-      const grid = document.getElementById(gridId);
-      grid.innerHTML = "";
-      let count = 0;
+        <!-- Apps List Tab Button -->
+        <button id="btn-apps" onclick="switchCategory('apps')" 
+                class="tab-btn flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all duration-200 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-mobile-screen-button text-base"></i>
+          <span>Apps</span>
+          <span id="badge-apps" class="bg-slate-800 text-slate-300 text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+        </button>
 
-      if(Array.isArray(files)) {
-        files.forEach(file => {
-          // ဖိုင်များကို စစ်ထုတ်ခြင်း (APK သို့မဟုတ် ပုံဖိုင်များ)
-          if(isImage && (file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i))) {
-            count++;
-            grid.innerHTML += `
-              <div class="card">
-                <img src="${file.download_url}" alt="${file.name}">
-                <h3>${file.name}</h3>
-                <a href="${file.download_url}" class="btn" target="_blank">View Full Size</a>
-              </div>
-            `;
-          } else if(!isImage && file.type === "file") {
-            count++;
-            grid.innerHTML += `
-              <div class="card">
-                <h3>📦 ${file.name}</h3>
-                <a href="${file.download_url}" class="btn" download>Download App</a>
-              </div>
-            `;
-          }
-        });
+        <!-- Others List Tab Button -->
+        <button id="btn-others" onclick="switchCategory('others')" 
+                class="tab-btn flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all duration-200 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-folder-open text-base"></i>
+          <span>Others</span>
+          <span id="badge-others" class="bg-slate-800 text-slate-300 text-xs px-2 py-0.5 rounded-full font-mono">0</span>
+        </button>
+        
+      </div>
+    </nav>
+
+    <!-- Search & Filter Bar -->
+    <div class="max-w-md mx-auto mb-8">
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="ဖိုင်နာမည်ရှာရန်..." 
+               class="w-full bg-cardbg border border-bordercolor text-slate-200 placeholder-slate-400 text-sm rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all shadow-inner">
+      </div>
+    </div>
+
+    <!-- ==================== 1. PHOTOS CATEGORY SECTION ==================== -->
+    <section id="category-photos" class="tab-content active">
+      <div class="flex items-center justify-between mb-4 border-b border-bordercolor/50 pb-2">
+        <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-images text-brand-400"></i> Photos List (ဓာတ်ပုံများ)
+        </h2>
+        <span class="text-xs text-slate-400">images/ Folder ထဲသို့ ပုံထည့်ပါ</span>
+      </div>
+
+      <!-- Photos Grid -->
+      <div class="item-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+
+        <!-- 📸 PHOTO ITEM CARD 1 -->
+        <div class="item-card bg-cardbg border border-bordercolor rounded-xl overflow-hidden hover:border-brand-500/50 transition-all duration-200 hover:-translate-y-1 shadow-lg group">
+          <div class="relative aspect-square overflow-hidden bg-slate-900">
+            <img src="images/8398.jpg" 
+                 onerror="this.onerror=null; this.src='https://placehold.co/600x600/1e293b/38bdf8?text=Image+8398.jpg';" 
+                 alt="Photo 8398" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <button onclick="openLightbox('images/8398.jpg', 'Photo 8398')" class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+              <i class="fa-solid fa-maximize text-2xl"></i>
+            </button>
+          </div>
+          <div class="p-3">
+            <h3 class="item-title font-medium text-sm text-slate-200 truncate mb-2" title="Photo 8398">Photo 8398</h3>
+            <div class="flex gap-2">
+              <button onclick="openLightbox('images/8398.jpg', 'Photo 8398')" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg font-medium transition text-center">
+                <i class="fa-solid fa-eye mr-1"></i> ကြည့်မည်
+              </button>
+              <a href="images/8398.jpg" download class="flex-1 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs rounded-lg font-medium transition text-center">
+                <i class="fa-solid fa-download mr-1"></i> Download
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 📸 PHOTO ITEM CARD 2 (Example Template: Copy & Duplicate this for new images) -->
+        <div class="item-card bg-cardbg border border-bordercolor rounded-xl overflow-hidden hover:border-brand-500/50 transition-all duration-200 hover:-translate-y-1 shadow-lg group">
+          <div class="relative aspect-square overflow-hidden bg-slate-900">
+            <img src="images/wallpaper.jpg" 
+                 onerror="this.onerror=null; this.src='https://placehold.co/600x600/1e293b/38bdf8?text=Sample+Photo';" 
+                 alt="Sample Wallpaper" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <button onclick="openLightbox('images/wallpaper.jpg', 'Sample Wallpaper')" class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+              <i class="fa-solid fa-maximize text-2xl"></i>
+            </button>
+          </div>
+          <div class="p-3">
+            <h3 class="item-title font-medium text-sm text-slate-200 truncate mb-2" title="Sample Wallpaper">Sample Wallpaper</h3>
+            <div class="flex gap-2">
+              <button onclick="openLightbox('images/wallpaper.jpg', 'Sample Wallpaper')" class="flex-1 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg font-medium transition text-center">
+                <i class="fa-solid fa-eye mr-1"></i> ကြည့်မည်
+              </button>
+              <a href="images/wallpaper.jpg" download class="flex-1 py-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs rounded-lg font-medium transition text-center">
+                <i class="fa-solid fa-download mr-1"></i> Download
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 2. APPS CATEGORY SECTION ==================== -->
+    <section id="category-apps" class="tab-content">
+      <div class="flex items-center justify-between mb-4 border-b border-bordercolor/50 pb-2">
+        <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-cubes text-brand-400"></i> Apps List (ဆော့ဖ်ဝဲလ်များ)
+        </h2>
+        <span class="text-xs text-slate-400">apps/ Folder ထဲသို့ APK/ZIP ထည့်ပါ</span>
+      </div>
+
+      <!-- Apps Grid -->
+      <div class="item-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- 📱 APP ITEM CARD 1 -->
+        <div class="item-card bg-cardbg border border-bordercolor rounded-2xl p-4 hover:border-brand-500/50 transition-all duration-200 hover:-translate-y-1 shadow-lg flex flex-col justify-between">
+          <div class="flex items-start gap-3 mb-3">
+            <div class="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-brand-400 text-2xl flex-shrink-0">
+              <i class="fa-brands fa-android"></i>
+            </div>
+            <div class="overflow-hidden">
+              <h3 class="item-title font-semibold text-base text-slate-100 truncate" title="Sample Tool v1.0">Sample Tool v1.0</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Android APK • 15.4 MB</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 mb-4 line-clamp-2">ကိုယ်ပိုင် ပြုလုပ်ထားသော အသုံးဝင် Utility App ဖိုင်ဖြစ်ပါသည်။</p>
+          <a href="apps/sample-tool.apk" download class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 shadow-md">
+            <i class="fa-solid fa-download"></i> APK ဒေါင်းလုဒ်ရယူရန်
+          </a>
+        </div>
+
+        <!-- 📱 APP ITEM CARD 2 (Template: Copy & Duplicate this for new Apps) -->
+        <div class="item-card bg-cardbg border border-bordercolor rounded-2xl p-4 hover:border-brand-500/50 transition-all duration-200 hover:-translate-y-1 shadow-lg flex flex-col justify-between">
+          <div class="flex items-start gap-3 mb-3">
+            <div class="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-brand-400 text-2xl flex-shrink-0">
+              <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+            <div class="overflow-hidden">
+              <h3 class="item-title font-semibold text-base text-slate-100 truncate" title="My Utility App">My Utility App</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Android APK • 28.0 MB</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-400 mb-4 line-clamp-2">မြန်မာစာ ထည့်သွင်းထားသော ဖုန်းဆော့ဖ်ဝဲလ် အသစ်။</p>
+          <a href="apps/my-app.apk" download class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 shadow-md">
+            <i class="fa-solid fa-download"></i> APK ဒေါင်းလုဒ်ရယူရန်
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 3. OTHERS CATEGORY SECTION ==================== -->
+    <section id="category-others" class="tab-content">
+      <div class="flex items-center justify-between mb-4 border-b border-bordercolor/50 pb-2">
+        <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
+          <i class="fa-solid fa-file-lines text-brand-400"></i> Others List (အခြားဖိုင်များနှင့် စာရွက်စာတမ်းများ)
+        </h2>
+        <span class="text-xs text-slate-400">docs/ Folder ထဲသို့ PDF/Zip ထည့်ပါ</span>
+      </div>
+
+      <!-- Others Grid -->
+      <div class="item-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- 📁 OTHER ITEM CARD 1 -->
+        <div class="item-card bg-cardbg border border-bordercolor rounded-2xl p-4 hover:border-brand-500/50 transition-all duration-200 hover:-translate-y-1 shadow-lg flex items-center justify-between">
+          <div class="flex items-center gap-3 overflow-hidden">
+            <div class="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 flex items-center justify-center text-xl flex-shrink-0">
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <div class="overflow-hidden">
+              <h3 class="item-title font-medium text-sm text-slate-200 truncate" title="User Guide Manual.pdf">User Guide Manual.pdf</h3>
+              <p class="text-xs text-slate-400 mt-0.5">PDF Document • 2.4 MB</p>
+            </div>
+          </div>
+          <a href="docs/guide.pdf" download class="p-2.5 bg-slate-800 hover:bg-brand-600 text-slate-300 hover:text-white rounded-xl transition flex-shrink-0 ml-2" title="Download">
+            <i class="fa-solid fa-download"></i>
+          </a>
+        </div>
+
+        <!-- 📁 OTHER ITEM CARD 2 -->
+        <div class="item-card bg-cardbg border border-bordercolor rounded-2xl p-4 hover:border-brand-500/50 transition-all duration-200 hover:-translate-y-1 shadow-lg flex items-center justify-between">
+          <div class="flex items-center gap-3 overflow-hidden">
+            <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-xl flex-shrink-0">
+              <i class="fa-solid fa-file-zipper"></i>
+            </div>
+            <div class="overflow-hidden">
+              <h3 class="item-title font-medium text-sm text-slate-200 truncate" title="Backup Data.zip">Backup Data.zip</h3>
+              <p class="text-xs text-slate-400 mt-0.5">ZIP Archive • 45.1 MB</p>
+            </div>
+          </div>
+          <a href="docs/backup.zip" download class="p-2.5 bg-slate-800 hover:bg-brand-600 text-slate-300 hover:text-white rounded-xl transition flex-shrink-0 ml-2" title="Download">
+            <i class="fa-solid fa-download"></i>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Empty State Message (Show when filter/search returns no result) -->
+    <div id="no-results" class="hidden text-center py-12">
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-800 text-slate-400 mb-3">
+        <i class="fa-solid fa-folder-open text-xl"></i>
+      </div>
+      <p class="text-slate-400 text-sm">ရှာဖွေထားသော ဖိုင်မရှိပါ သို့မဟုတ် ရှာဖွေချက် မှားယွင်းနေပါသည်။</p>
+    </div>
+
+  </div>
+
+  <!-- Lightbox Modal for Photo Preview -->
+  <div id="lightbox" class="lightbox flex-col items-center justify-center p-4">
+    <button onclick="closeLightbox()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-3xl p-2 focus:outline-none">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div class="max-w-4xl max-h-[80vh] overflow-hidden rounded-xl shadow-2xl mb-4">
+      <img id="lightbox-img" src="" alt="Full View" class="max-w-full max-h-[80vh] object-contain">
+    </div>
+    <div class="flex items-center gap-4">
+      <span id="lightbox-caption" class="text-slate-300 text-sm font-medium"></span>
+      <a id="lightbox-download" href="" download class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-lg transition flex items-center gap-2">
+        <i class="fa-solid fa-download"></i> Download Full Size
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-bordercolor/50 py-6 text-center text-xs text-slate-500">
+    <p>© Kaung San Lin • Hosted on GitHub Pages</p>
+  </footer>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // Current Active Tab State
+    let currentCategory = 'photos';
+
+    // Switch Category Tabs
+    function switchCategory(category) {
+      currentCategory = category;
+
+      // Update Section View Visibility
+      document.querySelectorAll('.tab-content').forEach(section => {
+        section.classList.remove('active');
+      });
+      const activeSection = document.getElementById(`category-${category}`);
+      if(activeSection) {
+        activeSection.classList.add('active');
       }
-      document.getElementById(countId).innerText = count;
-    } catch (error) {
-      console.error("Error loading files:", error);
+
+      // Update Tab Button Styles
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.className = "tab-btn flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all duration-200 flex items-center justify-center gap-2";
+      });
+
+      const activeBtn = document.getElementById(`btn-${category}`);
+      if(activeBtn) {
+        activeBtn.className = "tab-btn flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 bg-brand-600 text-white shadow-md";
+      }
+
+      // Re-apply current search filter to new category
+      filterItems();
     }
-  }
 
-  // Page စပွင့်တာနဲ့ ဖိုင်တွေကို လှမ်းဆွဲထုတ်ရန်
-  window.onload = () => {
-    loadFiles('apps', 'apps-grid', 'app-count', false);
-    loadFiles('images', 'photos-grid', 'photo-count', true);
-  };
-</script>
+    // Filter Items with Search Input
+    function filterItems() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const activeSection = document.getElementById(`category-${currentCategory}`);
+      const cards = activeSection.querySelectorAll('.item-card');
+      let visibleCount = 0;
 
+      cards.forEach(card => {
+        const titleText = card.querySelector('.item-title')?.textContent.toLowerCase() || "";
+        if (titleText.includes(query)) {
+          card.style.display = "";
+          visibleCount++;
+        } else {
+          card.style.display = "none";
+        }
+      });
+
+      // Toggle Empty State message
+      const noResults = document.getElementById('no-results');
+      if (visibleCount === 0) {
+        noResults.classList.remove('hidden');
+      } else {
+        noResults.classList.add('hidden');
+      }
+    }
+
+    // Update Counts dynamically on load
+    function updateCounts() {
+      ['photos', 'apps', 'others'].forEach(cat => {
+        const count = document.querySelectorAll(`#category-${cat} .item-card`).length;
+        const badge = document.getElementById(`badge-${cat}`);
+        if(badge) badge.textContent = count;
+      });
+    }
+
+    // Lightbox Functionality for Viewing Photos
+    function openLightbox(imgUrl, title) {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxCaption = document.getElementById('lightbox-caption');
+      const lightboxDownload = document.getElementById('lightbox-download');
+
+      lightboxImg.src = imgUrl;
+      lightboxCaption.textContent = title;
+      lightboxDownload.href = imgUrl;
+
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+    }
+
+    // Initialize counts on DOM Load
+    window.addEventListener('DOMContentLoaded', () => {
+      updateCounts();
+    });
+  </script>
 </body>
 </html>
